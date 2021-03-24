@@ -1,0 +1,33 @@
+<%INIT>
+# check if user has the rights to make changes to ticket
+return unless $$TicketObj->CurrentUserHasRight( 'ModifyTicket' );
+
+my $silent_resolve = $ARGSRef->{'ResolveSilently'} || 0;
+
+if ( $silent_resolve ) {
+    my ($ret, $msg) = $$TicketObj->_SetStatus( RecordTransaction => 0, Status => 'Resolved' );
+    my $message = $ret ? $msg : "Could not resolve ticket";
+
+    if ( $ret ) {
+        ($ret, $msg) = $$TicketObj->_NewTransaction(
+          Type           => 'Status',
+          ActivateScrips => 0,
+          Field          => "Status",
+          NewValue       => "resolved",
+          OldValue       => $$TicketObj->Status,
+          TimeTaken      => 0,
+        );
+        push( @$Actions, $message );
+    }
+    else {
+        RT::Logger->error( "Could not silently resolve ticket: #".$$TicketObj->Id.", $msg" );
+    }
+}
+</%INIT>
+
+<%ARGS>
+$Actions
+$ARGSRef
+$TicketObj
+</%ARGS>
+

@@ -1,0 +1,32 @@
+<%init>
+return unless $Path =~ m{^/Ticket/};
+
+my $id = $DECODED_ARGS->{'id'};
+return unless $id;
+
+my $ticket = RT::Ticket->new( $session{'CurrentUser'} );
+my ( $ret, $msg ) = $ticket->Load( $id );
+return RT::Logger->error( 'Unable to load ticket ' . $id . ': ' . $msg ) unless $ret;
+
+# check if user has the rights to make changes and reply to ticket
+return unless $ticket->CurrentUserHasRight( 'ModifyTicket' ) && $ticket->CurrentUserHasRight( 'ReplyToTicket' );
+
+# Add Resolve Silently action
+my $actions = PageMenu();
+foreach my $child ( $actions->children ) {
+    if ( $child->{'key'} eq 'actions' ) {
+        if ( grep {$_->{'key'} eq 'Resolve' } $child->children ) {
+            $child->child(
+              resolvesilently => title => loc('Resolve Silently'),
+              sort_order      => 6,
+              path            => "/Ticket/Update.html?SubmitTicket=1&ResolveSilently=1&id=" . $id
+            );
+        }
+        last;
+    }
+}
+</%init>
+
+<%args>
+$Path
+</%args>
