@@ -45,18 +45,7 @@ Add this line:
 
 =head1 AUTHOR
 
-Best Practical Solutions, LLC E<lt>modules@bestpractical.comE<gt>
-
-=for html <p>All bugs should be reported via email to <a
-href="mailto:bug-RT-Extension-ResolveSilently@rt.cpan.org">bug-RT-Extension-ResolveSilently@rt.cpan.org</a>
-or via the web at <a
-href="http://rt.cpan.org/Public/Dist/Display.html?Name=RT-Extension-ResolveSilently">rt.cpan.org</a>.</p>
-
-=for text
-    All bugs should be reported via email to
-        bug-RT-Extension-ResolveSilently@rt.cpan.org
-    or via the web at
-        http://rt.cpan.org/Public/Dist/Display.html?Name=RT-Extension-ResolveSilently
+Craig Kaiser E<lt>modules@ceal.devE<gt>
 
 =head1 LICENSE AND COPYRIGHT
 

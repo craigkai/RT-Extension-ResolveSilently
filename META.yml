@@ -1,7 +1,7 @@
 ---
 abstract: 'RT-Extension-ResolveSilently Extension'
 author:
-  - 'Best Practical Solutions, LLC <modules@bestpractical.com>'
+  - 'Craig Kaiser <modules@ceal.dev>'
 build_requires:
   ExtUtils::MakeMaker: 6.59
 configure_requires:
