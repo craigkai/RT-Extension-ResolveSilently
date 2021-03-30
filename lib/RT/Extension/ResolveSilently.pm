@@ -2,6 +2,8 @@ use strict;
 use warnings;
 package RT::Extension::ResolveSilently;
 
+RT->AddJavaScript( 'rt-extension-resolvesilently.js' );
+
 our $VERSION = '0.01';
 
 =head1 NAME

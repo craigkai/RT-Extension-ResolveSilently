@@ -1,0 +1,42 @@
+<%INIT>
+my $silent_resolve = $ARGSRef->{'ResolveSilently'} || 0;
+return unless $silent_resolve && $ARGSRef->{'Status'} eq 'resolved';
+
+foreach my $id ( @{$UpdateTicketRef} ) {
+    my $ticket = RT::Ticket->new( $session{'CurrentUser'} );
+    my ($ret, $msg) = $ticket->Load( $id );
+    unless ( $ret ) {
+        RT::Logger->error( "Could not load ticket #$id: $msg" );
+        next;
+    }
+
+    next unless $ticket->CurrentUserHasRight( 'ModifyTicket' );
+
+    ($ret, $msg) = $ticket->_SetStatus( RecordTransaction => 0, Status => 'Resolved' );
+    my $message = $ret ? $msg : "Could not resolve ticket";
+
+    if ( $ret ) {
+        ($ret, $msg) = $ticket->_NewTransaction(
+          Type           => 'Status',
+          ActivateScrips => 0,
+          Field          => "Status",
+          NewValue       => "resolved",
+          OldValue       => $ticket->Status,
+          TimeTaken      => 0,
+        );
+        push( @{$results_ref}, $message );
+
+        # Unset status so that the normal update doesn't go through
+        $ARGSRef->{'Status'} = '';
+    }
+    else {
+        RT::Logger->error( "Could not silently resolve ticket: #$id, $msg" );
+    }
+}
+</%INIT>
+<%ARGS>
+$ARGSRef
+$results_ref
+$QueryRef
+$UpdateTicketRef
+</%ARGS>
