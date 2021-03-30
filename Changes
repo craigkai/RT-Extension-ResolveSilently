@@ -1,4 +1,7 @@
 Revision history for RT-Extension-ResolveSilently
 
+0.02
+ - Add resolve silently to bulk update page.
+
 0.01
  - Initial version
